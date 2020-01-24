@@ -214,6 +214,10 @@ if [ "$?" -eq 0 ]; then
   if [ "$?" -ne 0 ]; then
     exitWithMsg 213 "Users dump failed"
   fi
+  sed -i -e '/LOCK TABLES/d' ${BACKUP_DIR}/users.sql
+  sed -i -e '/^\/\*\!/d' ${BACKUP_DIR}/users.sql
+  sed -i -e '/'root'/d' ${BACKUP_DIR}/users.sql
+
 fi
 
 hasSkip "grants"
