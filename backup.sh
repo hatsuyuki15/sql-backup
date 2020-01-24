@@ -203,33 +203,7 @@ fi
 hasSkip "views"
 if [ "$?" -eq 0 ]; then
   echo "Views ..."
-  VIEWS_SHOW_SQL=""
-  oldIFS=$IFS
-  IFS=$'\n'
-  for VIEW in $VIEWS; do # Concat SHOW CREATE VIEW command
-      VIEWS_SHOW_SQL="${VIEWS_SHOW_SQL}SHOW CREATE VIEW ${VIEW};"
-  done
-  IFS=$oldIFS
-
-  # echo -e "${VIEWS_SHOW_SQL}"
-  echo ${VIEWS_SHOW_SQL} | sed 's/;/\\G/g' | mysql ${MYSQL_CONN} > ${BACKUP_DIR}/views.sql
-
-  if [ "$?" -ne 0 ]; then
-    exitWithMsg 212 "Views dump failed"
-  fi
-
-  #Keeps lines starting with Create
-  sed -i '/Create/!d' ${BACKUP_DIR}/views.sql
-  # Removes 'Create View'
-  sed -i -e 's/Create\ View://g' ${BACKUP_DIR}/views.sql
-  #add ; at lines end
-  sed -i 's/)$/);/' ${BACKUP_DIR}/views.sql
-  #Remove spaces before start of line
-  sed -i 's/^ *//' ${BACKUP_DIR}/views.sql
-  #Add ; at line end
-  sed -i 's/$/;/' ${BACKUP_DIR}/views.sql
-  #Replace double ;; by ;
-  sed -i 's/;;/;/' ${BACKUP_DIR}/views.sql
+  mysql ${MYSQL_CONN} --skip-column-names --batch -e 'select CONCAT("CREATE OR REPLACE VIEW ", TABLE_SCHEMA, ".", TABLE_NAME, " AS ", VIEW_DEFINITION, "; ") table_name from information_schema.views' > ${BACKUP_DIR}/views.sql
 fi
 
 hasSkip "users"
