@@ -109,7 +109,7 @@ for DB in $DB_LIST; do # Concat ignore command
 done
 
 hasSkip "views"
-if [ "$?" -eq 0 ]; then
+if [ "$?" -eq 1 ]; then
   VIEW_LIST_SQL="SET SESSION group_concat_max_len = 1000000;SELECT IFNULL(GROUP_CONCAT(concat(':!\`',table_schema,'\`.\`',table_name,'\`') SEPARATOR ''),'') FROM information_schema.views"
 
   # If ${SKIP_DATABASES} is not empty, create a where chain
