@@ -229,7 +229,7 @@ if [ "$?" -eq 0 ]; then
   if [ "$?" -ne 0 ]; then
     exitWithMsg 214 "Grants dump failed"
   fi
-  echo ${GRANTS_LIST} | sed 's/\(GRANT .*\)/\1;/;s/^\(Grants for .*\)/-- \1 --/;/--/{x;p;x;}' > ${BACKUP_DIR}/grants.sql
+  echo "${GRANTS_LIST}" | sed 's/\(GRANT .*\)/\1;/;s/^\(Grants for .*\)/-- \1 --/;/--/{x;p;x;}' > ${BACKUP_DIR}/grants.sql
 
 
   # Removes double backslashes >  \\
