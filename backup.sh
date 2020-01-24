@@ -234,6 +234,7 @@ if [ "$?" -eq 0 ]; then
 
   # Removes double backslashes >  \\
   sed -i -e 's/\\\\//g' ${BACKUP_DIR}/grants.sql
+  sed -i -e 's/IDENTIFIED BY PASSWORD <secret>//g' ${BACKUP_DIR}/grants.sql
   # echo -e ${GRANTS_SQL}
 fi
 
